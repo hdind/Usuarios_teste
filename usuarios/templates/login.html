@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Tela de Login</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" type="text/css" href="/static/css/login.css">
 </head>
 <body>
   <div class="container">
@@ -13,8 +13,8 @@
         <input type="password" placeholder="Senha" required>
         <button type="submit">Entrar</button>
       </form>
-      <p><a href="#" //TODO >Esqueci minha senha.</a></p>
-      <p>Não tem uma conta? <a href="#" //TODO >Cadastre-se</a></p>
+      <p><a href="#">Esqueci minha senha.</a></p>
+      <p>Não tem uma conta? <a href="{% url 'register' %}">Cadastre-se</a></p>
     </div>
   </div>
 </body>
