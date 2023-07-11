@@ -1,61 +1,25 @@
 from django.shortcuts import render, redirect, HttpResponse
-from usutest.forms import LoginAccountForms, CreateAccountForms
+from django.contrib.auth import authenticate, login
+from usutest.models import FormUser
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
 
-def login(request):
-    form = LoginAccountForms()
-
-    if request.method == 'POST':
-        form = LoginAccountForms(request.POST)
-
-        if form.is_valid():
-            nome = form['username'].value()
-            senha = form['password'].value()
-
-        usuario = auth.authenticate(
-            request,
-            username=nome,
-            password=senha
-        )
-        if usuario is not None:
-            auth.login(request, usuario)
-            messages.success(request, f'{nome} logado com sucesso!')
-            return HttpResponse('Usuário logado com sucesso!')
-        else:
-            messages.error(request, 'Erro ao efetuar login')
-            return redirect('login')
-
+def login_account(request):
+    form = FormUser()
     return render(request, 'usutest/login.html', {'form': form})
 
-def create_account(request):
-    form = CreateAccountForms()
+def create_account(self, request):
+    form = self.FormUser(request.POST)
+    if form.is_valid():
+        login_data = form.cleaned_data
+        user = authenticate(request, login=login_data["login"], password=login_data["password"])
+        if user is not None:
+            login(request, user)
+            return redirect("home")  # Redirecionar para a página principal após o login
+    return render(request, "login.html", {"form": form})
 
-    if request.method == 'POST':
-        form = CreateAccountForms(request.POST)
-
-        if form.is_valid():
-            nome=form['username_create'].value()
-            email=form['email'].value()
-            senha=form['password_1'].value()
-
-            if User.objects.filter(username=nome).exists():
-                messages.error(request, 'Usuário já existente')
-                return redirect('cadastro')
-
-            usuario = User.objects.create_user(
-                username=nome,
-                email=email,
-                password=senha
-            )
-            usuario.save()
-            messages.success(request, 'Cadastro efetuado com sucesso!')
-            return redirect('login')
-
-    return render(request, 'usutest/cadastro.html', {'form': form})
-
-def logout(request):
+def logout_account(request):
     auth.logout(request)
     messages.success(request, 'Logout efetuado com sucesso!')
     return redirect('login')
