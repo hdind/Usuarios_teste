@@ -1,1 +1,3 @@
-# Aplicação web de cadastro e login de usuários em Django
+# Web application to login, register and logout users with Django
+
+Just a test
