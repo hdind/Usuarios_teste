@@ -9,8 +9,9 @@
         <div class="login-box">
             <h2>Cadastro</h2>
             <form method="POST">
+                {% csrf_token %}
                 <label for="login">Login:</label>
-                <input type="text" id="login" name="login" placeholder="Login" required>
+                <input type="text" id="login" name="username" placeholder="Nome de usuário" required>
 
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" placeholder="Email" required>

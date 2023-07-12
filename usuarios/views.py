@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, logout as logout_django, login as 
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url='/login/')
+# @login_required(login_url='/login/')
 def snakegame(request):
     return render(request, 'snakegame.html')
 
@@ -21,20 +21,22 @@ def login(request):
             login_django(request, user)
             return snakegame(request)
         else:
-            return HttpResponse('Email ou senha inválidos')
+            # TODO HttpResponse('Email ou senha inválidos')
+            return render(request, 'login.html')
 
 def register(request):
     if request.method == 'GET':
         return render(request, 'register.html')
     else:
-        username = request.POST.get('login')
+        username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
         user = User.objects.filter(username=username).first()
 
         if user:
-            return HttpResponse('Já existe um usuário com esse username.')
+            # TODO HttpResponse('Já existe um usuário com esse username.')
+            return render(request, 'login.html')
         else:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()

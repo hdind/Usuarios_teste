@@ -16,7 +16,11 @@ SECRET_KEY = str(os.getenv('DJANGO_SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-hdind-usuariosteste-4wff7mv7k8t.ws-us101.gitpod.io']
+ALLOWED_HOSTS = [
+    '8000-hdind-usuariosteste-4wff7mv7k8t.ws-us101.gitpod.io',
+    '127.0.0.1:8000', 
+    '127.0.0.1'
+]
 
 
 # Application definition
