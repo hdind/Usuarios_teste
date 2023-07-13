@@ -20,29 +20,75 @@
             const screen = document.getElementById('screen')
             const context = screen.getContext('2d')
             
-            const game = {
-                players: {
-                    'player1': { x:1, y:1 }
-                },
-                fruits: {
-                    'fruit1': { x:1, y:2 }
-                }
+            // Rules layer 
+            function checkMapLimitationRule(keyPressed, state) {
+                const moving = {
+                        'ArrowUp': (state.player.y - 1 >= 0 ? true : false),
+                        'ArrowDown': (state.player.y + 1 < screen.height ? true : false),
+                        'ArrowRight': (state.player.x + 1 < screen.width ? true : false),
+                        'ArrowLeft': (state.player.x - 1 >= 0 ? true : false),
+                    }
+                return moving[keyPressed]
             }
 
+            // Game layer
+            function createGame() {
+                const state = {
+                    player: { 
+                        x:0, 
+                        y:0 
+                    },
+                    fruits: {
+                        'fruit1': { x:1, y:2 }
+                    }
+                }
+                function movePlayer(keyPressed) {
+                    if (checkMapLimitationRule(keyPressed, state)) {
+                        if (keyPressed === 'ArrowUp') {
+                            state.player.y = state.player.y - 1;
+                        }
+                        if (keyPressed === 'ArrowDown') {
+                            state.player.y = state.player.y + 1;
+                        }
+                        if (keyPressed === 'ArrowRight') {
+                            state.player.x = state.player.x + 1;
+                        }
+                        if (keyPressed === 'ArrowLeft') {
+                            state.player.x = state.player.x - 1;
+                        }                        
+                        console.log(`Moving player with ${keyPressed}`)
+                    } else {
+                    console.log('You are at the edge of the map')
+                    }                
+                }
+                return {
+                    movePlayer,
+                    state
+                }
+            }
+            const game = createGame()
+            
+            // Input layer
+            document.addEventListener('keydown', handleKeydown)
+
+            function handleKeydown(event) {
+                const keyPressed = event.key
+
+                game.movePlayer(keyPressed)
+            }
+
+
+            // Show layer
             renderScreen()
 
             function renderScreen() {
-                context.fillStyle = 'white'
-                context.fillRect(0, 0, 10, 10)
+                context.clearRect(0, 0, 10, 10)
 
-                for (playerId in game.players) {
-                    const player = game.players[playerId]
-                    context.fillStyle = 'black'
-                    context.fillRect(player.x, player.y, 1, 1)
-                }
-                
-                for (fruitId in game.fruits) {
-                    const fruit = game.fruits[fruitId]
+                context.fillStyle = 'black'
+                context.fillRect(game.state.player.x, game.state.player.y, 1, 1)
+
+                for (const fruitId in game.state.fruits) {
+                    const fruit = game.state.fruits[fruitId]
                     context.fillStyle = 'green'
                     context.fillRect(fruit.x, fruit.y, 1, 1)
                 }

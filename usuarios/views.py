@@ -45,3 +45,6 @@ def register(request):
 def logout(request):
     logout_django(request)
     return HttpResponse('Usuário saiu com sucesso.')
+
+def testes(request):
+    return render(request, 'testes.html')
