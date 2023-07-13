@@ -10,6 +10,9 @@
             <h2>Cadastro</h2>
             <form method="POST">
                 {% csrf_token %}
+                {% if erro %}
+                <p class="errorMessage">{{ erro }}</p>
+                {% endif %}   
                 <label for="login">Login:</label>
                 <input type="text" id="login" name="username" placeholder="Nome de usuário" required>
 

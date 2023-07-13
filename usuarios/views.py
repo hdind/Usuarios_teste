@@ -1,10 +1,10 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, HttpResponseRedirect, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, logout as logout_django, login as login_django
 from django.contrib.auth.decorators import login_required
 
 
-# @login_required(login_url='/login/')
+@login_required(login_url='/login/')
 def snakegame(request):
     return render(request, 'snakegame.html')
 
@@ -19,10 +19,9 @@ def login(request):
 
         if user:
             login_django(request, user)
-            return snakegame(request)
+            return redirect('snakegame')
         else:
-            # TODO HttpResponse('Email ou senha inválidos')
-            return render(request, 'login.html')
+            return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos'})
 
 def register(request):
     if request.method == 'GET':
@@ -35,16 +34,12 @@ def register(request):
         user = User.objects.filter(username=username).first()
 
         if user:
-            # TODO HttpResponse('Já existe um usuário com esse username.')
-            return render(request, 'login.html')
+            return render(request, 'register.html', {'erro': 'Já existe um usuário com esse username'})
         else:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
-            return HttpResponse('Usuário cadastrado com sucesso.')
+            return redirect('login')
 
 def logout(request):
     logout_django(request)
-    return HttpResponse('Usuário saiu com sucesso.')
-
-def testes(request):
-    return render(request, 'testes.html')
+    return redirect('login')
