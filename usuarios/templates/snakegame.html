@@ -20,7 +20,7 @@
             const screen = document.getElementById('screen')
             const context = screen.getContext('2d')
             
-            // Rules layer 
+            // Rules layer
             function checkMapLimitationRule(keyPressed, state) {
                 const moving = {
                         'ArrowUp': (state.player.y - 1 >= 0 ? true : false),
@@ -31,41 +31,67 @@
                 return moving[keyPressed]
             }
 
+            function checkPlayerEatFruit(state) {
+                if (state.player.x == state.fruit.x && state.player.y == state.fruit.y){
+                    return true
+                } else {
+                    return false
+                }
+            }
+
             // Game layer
             function createGame() {
                 const state = {
                     player: { 
-                        x:0, 
-                        y:0 
+                        x: 0, y: 0, score: 0
                     },
-                    fruits: {
-                        'fruit1': { x:1, y:2 }
+                    fruit: {
+                        x:0, y:0
                     }
-                }
-                function movePlayer(keyPressed) {
-                    if (checkMapLimitationRule(keyPressed, state)) {
-                        if (keyPressed === 'ArrowUp') {
-                            state.player.y = state.player.y - 1;
+                }   // TODO continuosMove, change the direction with keyPressed
+                    function movePlayerIfNecessary(keyPressed) {
+                        if (checkMapLimitationRule(keyPressed, state)) {
+                            if (keyPressed === 'ArrowUp') {
+                                state.player.y = state.player.y - 1;
+                            }
+                            if (keyPressed === 'ArrowDown') {
+                                state.player.y = state.player.y + 1;
+                            }
+                            if (keyPressed === 'ArrowRight') {
+                                state.player.x = state.player.x + 1;
+                            }
+                            if (keyPressed === 'ArrowLeft') {
+                                state.player.x = state.player.x - 1;
+                            }                        
+                            console.log(`Moving player with ${keyPressed}`)
+                        } else {
+                        console.log('You are at the edge of the map')
                         }
-                        if (keyPressed === 'ArrowDown') {
-                            state.player.y = state.player.y + 1;
+                    }
+                    function increasePlayerScoreIfNecessary() {
+                        if (checkPlayerEatFruit(state)) {
+                            state.player.score += 1
+                            console.log(state.player.score)
+                        }                  
+                    }
+                    function replaceFruitIfNecessary() {
+                        if (checkPlayerEatFruit(state)) {
+                            min = Math.ceil(0);
+                            max = Math.floor(9);
+                            // TODO checkPlayerFruitPosition
+                            state.fruit.x = Math.floor(Math.random() * (max - min + 1) + min);
+                            state.fruit.y = Math.floor(Math.random() * (max - min + 1) + min);
+                            console.log(`fruit x: ${state.fruit.x}, fruit y: ${state.fruit.y}`)
                         }
-                        if (keyPressed === 'ArrowRight') {
-                            state.player.x = state.player.x + 1;
-                        }
-                        if (keyPressed === 'ArrowLeft') {
-                            state.player.x = state.player.x - 1;
-                        }                        
-                        console.log(`Moving player with ${keyPressed}`)
-                    } else {
-                    console.log('You are at the edge of the map')
-                    }                
-                }
+                    }
                 return {
-                    movePlayer,
+                    movePlayerIfNecessary,
+                    increasePlayerScoreIfNecessary,
+                    replaceFruitIfNecessary,
                     state
                 }
             }
+
             const game = createGame()
             
             // Input layer
@@ -74,9 +100,10 @@
             function handleKeydown(event) {
                 const keyPressed = event.key
 
-                game.movePlayer(keyPressed)
-            }
+                game.movePlayerIfNecessary(keyPressed)
+                game.increasePlayerScoreIfNecessary()
 
+            }
 
             // Show layer
             renderScreen()
@@ -86,12 +113,10 @@
 
                 context.fillStyle = 'black'
                 context.fillRect(game.state.player.x, game.state.player.y, 1, 1)
-
-                for (const fruitId in game.state.fruits) {
-                    const fruit = game.state.fruits[fruitId]
-                    context.fillStyle = 'green'
-                    context.fillRect(fruit.x, fruit.y, 1, 1)
-                }
+                
+                game.replaceFruitIfNecessary()
+                context.fillStyle = 'green'
+                context.fillRect(game.state.fruit.x, game.state.fruit.y, 1, 1)
 
                 requestAnimationFrame(renderScreen)
             }
