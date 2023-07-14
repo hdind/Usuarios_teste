@@ -2,20 +2,20 @@
     <head>
         <meta charset="utf-8">
         <title>Snake game</title>
-
-        <style>
-            #screen {
-                border: 10px solid #CCC;
-                image-rendering: pixelated;
-                image-rendering: crisp-edges;
-                image-rendering: -moz-crisp-edges;
-                width: 400px;
-                height: 400px;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="/static/css/snakegame.css">
     </head>
     <body>
         <canvas id="screen" width="10" height="10"></canvas>
+        <div calss="scoreBoard" id="scoreBoard">
+            <span class="label">Pontuação:</span>
+            <span class="score" id="score">0</span>
+        </div>
+        <div class="logout-container"> // TODO UX/UI
+            <a href="/logout/">
+              <button class="logout-button">Logout</button>
+            </a>
+          </div>
+          
         <script>
             const screen = document.getElementById('screen')
             const context = screen.getContext('2d')
@@ -72,6 +72,7 @@
                         if (checkPlayerEatFruit(state)) {
                             state.player.score += 1
                             console.log(state.player.score)
+                            renderScoreBoard(state)
                         }                  
                     }
                     function replaceFruitIfNecessary() {
@@ -119,6 +120,10 @@
                 context.fillRect(game.state.fruit.x, game.state.fruit.y, 1, 1)
 
                 requestAnimationFrame(renderScreen)
+            }
+
+            function renderScoreBoard(state) {
+                document.getElementById('score').textContent = state.player.score
             }
         </script>
     </body>
