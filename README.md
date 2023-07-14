@@ -21,7 +21,7 @@
 
 - SOLID
 - Clean code
-- Separation of concerns
+- Separation of concerns -> "De quem é esse código?"
 
 ### Camadas do projeto
 
@@ -30,7 +30,13 @@ Uso a lib do Django, auth, para criar a tabela do banco de dados que recebe os r
 O jogo só é acessado se o usuário estiver logado. A autenticação acontece por meio do do decorator *@login_required*
 
 - O jogo: (em desenvolvimento)
-Uso JavaScript para # TODO
+Com HTML crio um canvas branco na tela com 10px por 10px e renderizado para parecer 400px por 400px com CSS. Dentro do canvas, um player "quadrado" de 1px preto e uma fruta "quadrada" também de 1px verde. 
+A lógica é dividida em camadas para melhor separar os conceitos e deixar um código com arquitetura mais limpa. 
+Camadas do jogo:
+    - Apresentação -> responsável pela renderização do jogo na tela
+    - Jogo -> responsável por receber o input e executar ou não a movimentação do player de acordo com as regras do jogo
+    - Input -> responsável por ouvir o teclado e anotar a tecla que foi pressionada
+    - Regras do jogo -> responsável por validar a movimentação do player e identificar colisão entre player e fruta
 
 ---
 
