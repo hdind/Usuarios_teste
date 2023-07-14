@@ -17,21 +17,19 @@ SECRET_KEY = str(os.getenv('DJANGO_SECRET_KEY'))
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '8000-hdind-usuariosteste-4wff7mv7k8t.ws-us101.gitpod.io',
-    '8000-hdind-usuariosteste-6xvisu9amg4.ws-us101.gitpod.io',
+    '8000-hdind-usuariosteste-nbcdyi5pt9j.ws-us101.gitpod.io',
     '127.0.0.1:8000', 
     '127.0.0.1'
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    '8000-hdind-usuariosteste-4wff7mv7k8t.ws-us101.gitpod.io',
-    '8000-hdind-usuariosteste-6xvisu9amg4.ws-us101.gitpod.io',
+    '8000-hdind-usuariosteste-nbcdyi5pt9j.ws-us101.gitpod.io',
     '127.0.0.1:8000', 
     '127.0.0.1'
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://8000-hdind-usuariosteste-6xvisu9amg4.ws-us101.gitpod.io'
+    'https://8000-hdind-usuariosteste-nbcdyi5pt9j.ws-us101.gitpod.io'
 ]
 
 # Application definition
