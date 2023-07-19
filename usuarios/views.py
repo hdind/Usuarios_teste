@@ -5,8 +5,8 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required(login_url='/login/')
-def snakegame(request):
-    return render(request, 'snakegame.html')
+def game(request):
+    return render(request, 'game.html')
 
 def login(request):
     if request.method == 'GET':
@@ -19,7 +19,7 @@ def login(request):
 
         if user:
             login_django(request, user)
-            return redirect('snakegame')
+            return redirect('game')
         else:
             return render(request, 'login.html', {'erro': 'Usuário ou senha inválidos'})
 
