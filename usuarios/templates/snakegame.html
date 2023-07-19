@@ -10,7 +10,7 @@
             <span class="label">Pontuação:</span>
             <span class="score" id="score">0</span>
         </div>
-        <div class="logout-container"> // TODO UX/UI
+        <div class="logout-container"> 
             <a href="/logout/">
               <button class="logout-button">Logout</button>
             </a>
@@ -48,43 +48,44 @@
                     fruit: {
                         x:0, y:0
                     }
-                }   // TODO continuosMove, change the direction with keyPressed
-                    function movePlayerIfNecessary(keyPressed) {
-                        if (checkMapLimitationRule(keyPressed, state)) {
-                            if (keyPressed === 'ArrowUp') {
-                                state.player.y = state.player.y - 1;
-                            }
-                            if (keyPressed === 'ArrowDown') {
-                                state.player.y = state.player.y + 1;
-                            }
-                            if (keyPressed === 'ArrowRight') {
-                                state.player.x = state.player.x + 1;
-                            }
-                            if (keyPressed === 'ArrowLeft') {
-                                state.player.x = state.player.x - 1;
-                            }                        
-                            console.log(`Moving player with ${keyPressed}`)
-                        } else {
-                        console.log('You are at the edge of the map')
+                }  
+                function movePlayerIfNecessary(keyPressed) {
+                    if (checkMapLimitationRule(keyPressed, state)) {
+                        if (keyPressed === 'ArrowUp') {
+                            state.player.y = state.player.y - 1;
                         }
-                    }
-                    function increasePlayerScoreIfNecessary() {
-                        if (checkPlayerEatFruit(state)) {
-                            state.player.score += 1
-                            console.log(state.player.score)
-                            renderScoreBoard(state)
-                        }                  
-                    }
-                    function replaceFruitIfNecessary() {
-                        if (checkPlayerEatFruit(state)) {
-                            min = Math.ceil(0);
-                            max = Math.floor(9);
-                            // TODO checkPlayerFruitPosition
-                            state.fruit.x = Math.floor(Math.random() * (max - min + 1) + min);
-                            state.fruit.y = Math.floor(Math.random() * (max - min + 1) + min);
-                            console.log(`fruit x: ${state.fruit.x}, fruit y: ${state.fruit.y}`)
+                        if (keyPressed === 'ArrowDown') {
+                            state.player.y = state.player.y + 1;
                         }
+                        if (keyPressed === 'ArrowRight') {
+                            state.player.x = state.player.x + 1;
+                        }
+                        if (keyPressed === 'ArrowLeft') {
+                            state.player.x = state.player.x - 1;
+                        }                        
+                        console.log(`Moving player with ${keyPressed}`)
+                    } else {
+                    console.log('You are at the edge of the map')
                     }
+                }
+                function increasePlayerScoreIfNecessary() {
+                    if (checkPlayerEatFruit(state)) {
+                        state.player.score += 1
+                        console.log(state.player.score)
+                        renderScoreBoard(state)
+                    }                  
+                }
+                function replaceFruitIfNecessary() {
+                    if (checkPlayerEatFruit(state)) {
+                        min = Math.ceil(0);
+                        max = Math.floor(9);
+
+                        state.fruit.x = Math.floor(Math.random() * (max - min + 1) + min);
+                        state.fruit.y = Math.floor(Math.random() * (max - min + 1) + min);
+
+                        console.log(`fruit x: ${state.fruit.x}, fruit y: ${state.fruit.y}`)
+                    }
+                }
                 return {
                     movePlayerIfNecessary,
                     increasePlayerScoreIfNecessary,

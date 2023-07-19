@@ -16,27 +16,32 @@
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   color: #fff; 
-  width: 200px;
+  width: 150px;
 
 }
 
 #score {
-  font-size: 36px;
+  font-size: 20px;
   font-weight: bold;
   margin-right: 10px;
   text-align: center;
 }
 
 .label {
-  font-size: 24px;
+  font-size: 17px;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-align: center;
 }
 
 .logout-container {
-  text-align: center;
-  margin-top: 20px;
+  position: fixed;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  position: absolute;
+  top: 428px;
+  left: 340px;
 }
 
 .logout-button {
