@@ -1,10 +1,11 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Snake game</title>
+        <title>Game</title>
         <link rel="stylesheet" type="text/css" href="/static/css/game.css">
     </head>
     <body>
+        <!-- TODO Ux/Ui -> Ana Júlia, tks -->
         <canvas id="screen" width="10" height="10"></canvas>
         <div calss="scoreBoard" id="scoreBoard">
             <span class="label">Pontuação:</span>
@@ -15,7 +16,10 @@
               <button class="logout-button">Logout</button>
             </a>
           </div>
-          
+        <div>
+            <p id="contador">Tempo restante: <span id="timer">30</span> segundos</p>
+            <button id="startButton" onclick="game.countDownTimer()">Start</button>
+        </div>
         <script>
             const screen = document.getElementById('screen')
             const context = screen.getContext('2d')
@@ -39,6 +43,16 @@
                 }
             }
 
+            function checkGameTimer(timeNow, interval, state) {
+                if (timeNow === 0) {
+                    alert(`Game Over, you have eated ${state.player.score}`)
+                    clearInterval(interval)
+                    return true
+                } else {
+                    return false
+                }
+            }
+            
             // Game layer
             function createGame() {
                 const state = {
@@ -47,7 +61,8 @@
                     },
                     fruit: {
                         x:0, y:0
-                    }
+                    },
+                    timer: 60
                 }  
                 function movePlayerIfNecessary(keyPressed) {
                     if (checkMapLimitationRule(keyPressed, state)) {
@@ -71,7 +86,6 @@
                 function increasePlayerScoreIfNecessary() {
                     if (checkPlayerEatFruit(state)) {
                         state.player.score += 1
-                        console.log(state.player.score)
                         renderScoreBoard(state)
                     }                  
                 }
@@ -86,15 +100,29 @@
                         console.log(`fruit x: ${state.fruit.x}, fruit y: ${state.fruit.y}`)
                     }
                 }
+                function countDownTimer() {
+                    var timeNow = 30
+                    var interval = setInterval(() => {
+                        timeNow--;
+
+                        if (checkGameTimer(timeNow, interval, state) === false) {
+                            renderTimer(timeNow)
+                        }
+                    }, 1000);
+                }
                 return {
                     movePlayerIfNecessary,
                     increasePlayerScoreIfNecessary,
                     replaceFruitIfNecessary,
+                    countDownTimer,
                     state
                 }
             }
 
-            const game = createGame()
+            // TODO player can't move while timer is not counting down
+            // TODO after the alert, restart score and timer values
+
+            const game = createGame() 
             
             // Input layer
             document.addEventListener('keydown', handleKeydown)
@@ -104,10 +132,9 @@
 
                 game.movePlayerIfNecessary(keyPressed)
                 game.increasePlayerScoreIfNecessary()
-
             }
 
-            // Show layer
+            // Presentation layer
             renderScreen()
 
             function renderScreen() {
@@ -126,6 +153,11 @@
             function renderScoreBoard(state) {
                 document.getElementById('score').textContent = state.player.score
             }
+
+            function renderTimer(timeNow) {
+                document.getElementById('timer').textContent = timeNow
+            }
+
         </script>
     </body>
 </html>
