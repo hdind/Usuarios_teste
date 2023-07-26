@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppings', sans-serif;
+  }
+  
+  canvas {
+    background-color: #111;
+    width: 600px;
+    height: 600px;
+  }
